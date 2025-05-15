@@ -88,14 +88,14 @@ const DKKEUR_RATE = 0.134; // 1 DKK = 0.134 EUR
 
 const providerData = {
   partnerComplyPay: { 
-    name: "Partner & ComplyPay", 
-    payinPercentage: 0.005, 
+    name: "Vibrant & ComplyPay", 
+    payinPercentage: 0.0099, 
     payinFixed: 0.06,       // EUR 0.10
     payoutPercentage: 0.00, 
     payoutFixed: 0.00,      // EUR 0.00 (fallback, dynamic logic applies as described above)
     walletPrice: 1.0,       // EUR 1.00 per vendor/month
     platformFee: 300,       // EUR (fallback, dynamic logic applies as described above)
-    logo: './Vibrant & ComplyPay Logo.png', // Generic logo, update per partner
+    logo: process.env.PUBLIC_URL  + '/main_horisontal_blueicon 2.png', // Generic logo, update per partner
     colors: {
       primary: '#2817FF', // Main theme color
       secondary: '#FFFFFF', // Used for contrast elements if needed
@@ -268,7 +268,7 @@ function App() {
     const currentDefaultProvider = providerData[defaultPspKey];
     setSelectedPspForStyle({
         ...currentDefaultProvider,
-        name: "Partner & ComplyPay", 
+        name: "Vibrant & ComplyPay", 
         colors: { primary: '#2817FF', secondary: '#FFFFFF' } 
     });
     calculateCosts(); 
@@ -354,13 +354,13 @@ function App() {
                 })}
             </div>
             <p className="results-footnote">
-                Values are estimates. All fees for Stripe, Mangopay, and Partner & ComplyPay are stored in EUR and converted to {currency} for calculation using rates: 1 GBP = {GBPEUR_RATE} EUR, 1 DKK = {DKKEUR_RATE} EUR. Custom provider fees are entered directly in {currency}.
+                Values are estimates. All fees for Stripe, Mangopay, and Vibrant & ComplyPay are stored in EUR and converted to {currency} for calculation using rates: 1 GBP = {GBPEUR_RATE} EUR, 1 DKK = {DKKEUR_RATE} EUR. Custom provider fees are entered directly in {currency}.
             </p>
         </section>
     );
 };
 
-  const complyPayFooterLogo = './main_horisontal_white.png'; // Update with your actual logo path in public/
+  const complyPayFooterLogo = process.env.PUBLIC_URL + '/main_horisontal_white.png'; // Update with your actual logo path in public/
 
   return (
     <div className="App" style={{ 
@@ -370,7 +370,7 @@ function App() {
       <header className="App-header card">
         <div className="header-content">
             <h1>Cost Savings Calculator</h1>
-            <p>Estimate your potential savings with Partner & ComplyPay</p>
+            <p>Estimate your potential savings with Vibrant & ComplyPay</p>
             <nav className="tab-navigation">
                 <button 
                     onClick={() => setActiveView('defaultComparison')} 
