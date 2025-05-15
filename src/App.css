@@ -1,38 +1,470 @@
+/* App.css - Styles for the PSP Cost Calculator */
+
+/* Import Mark Pro and Poppins fonts - User will need to ensure these are available, e.g., via Google Fonts */
+/* @import url("https://fonts.googleapis.com/css2?family=Mark+Pro&family=Poppins:wght@400;700&display=swap"); */
+
+/* --- CUSTOMIZABLE VARIABLES --- */
+/* Change these values to easily customize the calculator's appearance. */
+/* For more advanced customizations, you may need to edit specific CSS rules below. */
+:root {
+  /* Overall page background */
+  --main-background-color: #2817FF;
+
+  /* Background for main content cards (header, input sections, results section) */
+  --card-background-color: #FFFFFF;
+
+  /* Background for individual result cards (Stripe, Mangopay, etc.) within the results section */
+  --result-card-background-color: #f9f9f9; /* A slightly off-white for distinction */
+
+  /* Text color for all main headers (h1, h2, h3) */
+  --header-text-color: #2817FF;
+
+  /* Style for the active navigation tab */
+  --tab-active-color: #2817FF;        /* Text color and bottom border color of the active tab */
+  --tab-active-weight: bold;          /* Font weight of the active tab (e.g., normal, bold, 600) */
+
+  /* Colors for savings text */
+  --savings-positive-color: #28a745;  /* Text color for positive savings */
+  --savings-negative-color: #dc3545;  /* Text color for negative savings (losses) */
+
+  /* General border color used for elements like card sub-borders, result card borders */
+  --border-color: #eee;
+}
+
+body {
+  margin: 0;
+  font-family: "Mark Pro", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--main-background-color);
+  color: #FFFFFF; /* Default text color for content directly on main background, e.g., footer */
+}
+
 .App {
   text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* App-header is now a white card and a flex container */
+.App-header {
+  background-color: var(--card-background-color);
+  padding: 20px;
+  color: #333333; /* Default text color inside cards */
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex; /* Enable flexbox */
+  justify-content: space-between; /* Space between text content and logo */
+  align-items: flex-start; /* Align items to the top */
+  position: relative;
+}
+
+.header-content {
+  flex-grow: 1;
+  text-align: left;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  height: 100px;
+  max-width: 300px;
+  object-fit: contain;
+  margin-left: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App-header h1 {
+  margin: 0 0 5px 0;
+  font-size: 1.8em;
+  color: var(--header-text-color);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App-header p {
+  font-size: 0.9em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #555555;
+}
+
+/* Tab Navigation Styles */
+.tab-navigation {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.tab-navigation button {
+  font-family: "Mark Pro", "Poppins", sans-serif;
+  background-color: transparent;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #555555; /* Non-active tab text color */
+  margin-right: 10px;
+  border-bottom: 3px solid transparent;
+  transition: color 0.3s, border-bottom-color 0.3s;
+}
+
+.tab-navigation button:hover {
+  color: var(--tab-active-color);
+}
+
+.tab-navigation button.active {
+  color: var(--tab-active-color);
+  font-weight: var(--tab-active-weight);
+  border-bottom-color: var(--tab-active-color);
+}
+
+.App-main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 30px;
 }
 
-.App-link {
-  color: #61dafb;
+.card {
+  background-color: var(--card-background-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  color: #333333; /* Default text color inside cards */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.card h2 {
+  margin-top: 0;
+  color: var(--header-text-color);
+  font-size: 1.4em;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+@media (min-width: 600px) {
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  to {
-    transform: rotate(360deg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #555555;
+}
+
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc; /* Input border color, can also be a variable if needed */
+  border-radius: 4px;
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "Mark Pro", "Poppins", sans-serif;
+  color: #333333;
+}
+
+/* Results Section Specifics */
+.results-section {
+  /* Using .card styles for background and padding */
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.result-card {
+  background-color: var(--result-card-background-color);
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.result-card h3 {
+  margin-top: 0;
+  color: var(--header-text-color);
+  font-size: 1.2em;
+}
+
+.result-card p {
+  margin: 8px 0;
+  font-size: 0.95em;
+}
+
+.positive-savings {
+  color: var(--savings-positive-color);
+  font-weight: bold;
+}
+
+.negative-savings {
+  color: var(--savings-negative-color);
+  font-weight: bold;
+}
+
+/* This class was in your CSS, ensure it's used if needed or remove if .positive-savings covers it */
+.total-savings-highlight {
+  font-weight: bold;
+  color: var(--savings-positive-color);
+}
+
+.results-footnote {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.8em;
+  color: #555555;
+  text-align: left;
+}
+
+.App-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd; 
+  font-size: 0.8em;
+  color: #DDDDDD; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.footer-logo {
+  height: 30px; 
+  margin-left: 8px; 
+  vertical-align: middle;
+}
+
+body {
+  margin: 0;
+  font-family: "Mark Pro", "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--main-background-color);
+  color: #FFFFFF; /* Default text color for content directly on main background, e.g., footer */
+}
+
+.App {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* App-header is now a white card and a flex container */
+.App-header {
+  background-color: var(--card-background-color);
+  padding: 20px;
+  color: #333333; /* Default text color inside cards */
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex; /* Enable flexbox */
+  justify-content: space-between; /* Space between text content and logo */
+  align-items: flex-start; /* Align items to the top */
+  position: relative;
+}
+
+.header-content {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.App-logo {
+  height: 100px;
+  max-width: 300px;
+  object-fit: contain;
+  margin-left: 20px;
+}
+
+.App-header h1 {
+  margin: 0 0 5px 0;
+  font-size: 1.8em;
+  color: var(--header-text-color);
+}
+
+.App-header p {
+  font-size: 0.9em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #555555;
+}
+
+/* Tab Navigation Styles */
+.tab-navigation {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.tab-navigation button {
+  font-family: "Mark Pro", "Poppins", sans-serif;
+  background-color: transparent;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #555555; /* Non-active tab text color */
+  margin-right: 10px;
+  border-bottom: 3px solid transparent;
+  transition: color 0.3s, border-bottom-color 0.3s;
+}
+
+.tab-navigation button:hover {
+  color: var(--tab-active-color);
+}
+
+.tab-navigation button.active {
+  color: var(--tab-active-color);
+  font-weight: var(--tab-active-weight);
+  border-bottom-color: var(--tab-active-color);
+}
+
+.App-main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.card {
+  background-color: var(--card-background-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  color: #333333; /* Default text color inside cards */
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--header-text-color);
+  font-size: 1.4em;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+@media (min-width: 600px) {
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #555555;
+}
+
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc; /* Input border color, can also be a variable if needed */
+  border-radius: 4px;
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "Mark Pro", "Poppins", sans-serif;
+  color: #333333;
+}
+
+/* Results Section Specifics */
+.results-section {
+  /* Using .card styles for background and padding */
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.result-card {
+  background-color: var(--result-card-background-color);
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.result-card h3 {
+  margin-top: 0;
+  color: var(--header-text-color);
+  font-size: 1.2em;
+}
+
+.result-card p {
+  margin: 8px 0;
+  font-size: 0.95em;
+}
+
+.positive-savings {
+  color: var(--savings-positive-color);
+  font-weight: bold;
+}
+
+.negative-savings {
+  color: var(--savings-negative-color);
+  font-weight: bold;
+}
+
+/* This class was in your CSS, ensure it's used if needed or remove if .positive-savings covers it */
+.total-savings-highlight {
+  font-weight: bold;
+  color: var(--savings-positive-color);
+}
+
+.results-footnote {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.8em;
+  color: #555555;
+  text-align: left;
+}
+
+.App-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd; 
+  font-size: 0.8em;
+  color: #DDDDDD; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.footer-logo {
+  height: 30px; 
+  margin-left: 8px; 
+  vertical-align: middle;
 }
